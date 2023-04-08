@@ -1,3 +1,53 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components{
+    .container{
+        max-width: 1600px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    .card{}
+  
+    .button{
+      all: unset;
+      padding: .6rem 1.6rem;
+      font-weight: 600;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+}
+
+@layer base{
+    :root{
+        font-synthesis: none;
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        -webkit-text-size-adjust: 100%;
+
+        --color-text-white-base: #FFFFFF;
+        --color-text-white-muted: #C6D7FA;
+        --color-text-black-base: #3D404A;
+        --color-text-black-muted: rgb(134, 127, 122);
+        --color-bg-primary: #5589EF;
+        --color-bg-muted: #FCFCFC; /*body background*/
+        --color-bg-white: #fff;
+        --color-border: #F1F1F3;
+    
+        --color-bg-red:#fce8e4;
+        --color-text-red: #ef7055;
+        --color-bg-yellow: #fcf4e4;
+        --color-text-yellow: #efbb55;
+        --color-bg-green: #e2f7e4;
+        --color-text-green: #4ccc58;
+        --color-bg-blue: #e4f3fc;
+        --color-text-blue: #55b8ef;
+    }
+}
+
+body{
+    background-color: var(--color-bg-muted);
+}
