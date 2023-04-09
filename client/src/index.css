@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 @layer components{
-    .container{
+    .layout{
         max-width: 1600px;
         margin-left: auto;
         margin-right: auto;
@@ -28,15 +28,19 @@
         -moz-osx-font-smoothing: grayscale;
         -webkit-text-size-adjust: 100%;
 
+        --color-background: #F2F7FF;
+        --color-btn-blue: #0B7FEA;
+        
         --color-text-white-base: #FFFFFF;
         --color-text-white-muted: #C6D7FA;
         --color-text-black-base: #3D404A;
         --color-text-black-muted: rgb(134, 127, 122);
         --color-bg-primary: #5589EF;
-        --color-bg-muted: #FCFCFC; /*body background*/
+
         --color-bg-white: #fff;
         --color-border: #F1F1F3;
-    
+        
+        --color-text-white: #fff;
         --color-bg-red:#fce8e4;
         --color-text-red: #ef7055;
         --color-bg-yellow: #fcf4e4;
@@ -49,5 +53,5 @@
 }
 
 body{
-    background-color: var(--color-bg-muted);
+    background-color: var(--color-background);
 }
