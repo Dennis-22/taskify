@@ -64,7 +64,7 @@ export default function CreateTask() {
                     </div>
                 </div>
                 
-                <div>
+                <div className="my-3">
                     <p className="text-skin-black-muted mb-1">Set date</p>
                     <div className="m-2">
                         <p className="text-skin-black-muted text-sm mb-1">Start at</p>

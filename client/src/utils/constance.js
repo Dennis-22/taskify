@@ -1,6 +1,10 @@
 const _pages = {
     HOME:"/",
-    CREATE:"/create"
+    SIGN:"/sign",
+    DASHBOARD:"/dashboard",
+    CREATE_TASK:"/create-task",
+    TASK_DETAILS:"/task-details",
+    PROFILE:"/profile",
 }
 
 const _tasks = {
@@ -11,7 +15,8 @@ const _tasks = {
 }
 
 const _user = {
-
+    SIGN:"SIGN",
+    LOG_OUT:"LOG_OUT"
 }
 
 export {_pages, _tasks, _user}

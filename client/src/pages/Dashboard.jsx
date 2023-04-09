@@ -18,7 +18,7 @@ export default function Dashboard(){
                 text="Create new"
                 className="bg-skin-btn-blue"
                 textClassName="text-skin-white-base"
-                onClick={()=>navigate(_pages.CREATE)}
+                onClick={()=>navigate(_pages.CREATE_TASK)}
                 icon={<CgFolderAdd className="text-skin-white-base"/>}
             />
         </div>

@@ -1,8 +1,7 @@
-import Header from "../component/global/Header"
+import Layout from "../component/global/Layout"
 import Button from "../component/global/Button"
 export default function LadingPage(){
-    return <>
-        <Header />    
+    return <Layout>    
         <div className="text-center py-11">
             <h1 className="my-12 font-semibold text-4xl block leading-normal">
                 <span className="block">Get all your task organize</span>
@@ -12,5 +11,5 @@ export default function LadingPage(){
                 text="Sign up"
             />
         </div>
-    </> 
+    </Layout> 
 }
