@@ -13,7 +13,7 @@
   
     .button{
       all: unset;
-      padding: .6rem 1.6rem;
+      padding: .4rem 1.6rem;
       font-weight: 600;
       border-radius: 5px;
       cursor: pointer;

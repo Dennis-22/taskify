@@ -25,6 +25,7 @@ export default {
           "border-color":"var(--color-border)",
           blue:"var(--color-bg-blue)",
           "btn-blue":"var(--color-btn-blue)",
+          "btn-red":"var(--color-text-red)",
           red: "var(--color-bg-red)",
           yellow: "var(--color-bg-yellow)",
           green: "var(--color-bg-green)"
