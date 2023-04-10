@@ -1,19 +1,46 @@
-import { useState } from "react"
+import {useLayoutEffect, useState } from "react"
+import { useNavigate } from "react-router-dom"
+import {useUserContext} from '../../context/user/UserContext'
 import Input from "../global/Input"
 import Button from "../global/Button"
+import { loginRoute } from "../../utils/api"
+import { _pages, _user } from "../../utils/constance"
+
 
 export default function Login(){
+    const {userDispatch, userState:{signedIn}} = useUserContext()
     const [userDetails, setUserDetails] = useState({email:"", password:""})
     const [process, setProcess] = useState({loading:false, error:""})
-    
+    const navigate = useNavigate()
+
     const handleChange = (text, name)=>{
         setProcess((cur)=> ({...cur, error:""})) //remove any error if there is
         setUserDetails((cur) => ({...cur, [name]:text}))
     }
 
-    const handleSubmit = (e)=>{
+    useLayoutEffect(()=>{
+        // when user is already signed in redirect to dashboard
+        if(signedIn === true) navigate(_pages.DASHBOARD)
+    },[signedIn])
+
+    const handleSubmit = async(e)=>{
         e.preventDefault()
-        setProcess((cur)=> ({...cur, error:"This is an error"}))
+        // check if all inputs are filled
+        for(let field in userDetails){
+            if(userDetails[field] === "") return setProcess({loading:false, error:`${field} is empty`})
+        }
+
+        setProcess({loading:true, error:""})
+       
+        try {
+            const signUser = await loginRoute(userDetails)
+            userDispatch({type:_user.SIGN, payload:signUser.data.data})
+            // the useLayoutEffect ensures the redirecting to user's dashboard
+        } catch (error) {
+            console.log(error)
+            let errorResponse = error.response && error.response.data.message // if error from the backend
+            setProcess({loading:false, error: errorResponse || 'An error occurred please try again'})
+        }
     }
 
 
@@ -42,11 +69,14 @@ export default function Login(){
                 className="my-5"
             />
         </div>
-        <Button 
-            text="Sign up"
-            className="bg-skin-btn-blue mx-auto"
-            onClick={handleSubmit}
-            textClassName="text-skin-white-base"
-        />
+        {
+            process.loading ? <p>Loading</p> :
+            <Button 
+                text="Log in"
+                className="bg-skin-btn-blue mx-auto"
+                onClick={handleSubmit}
+                textClassName="text-skin-white-base"
+            />
+        }
     </form>
 }

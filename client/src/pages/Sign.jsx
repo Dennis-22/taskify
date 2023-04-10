@@ -10,28 +10,30 @@ const _authTypes = {
 export default function Sign(){
     const [authType, setAuthType] = useState(_authTypes.login)
 
-    return <div className="w-[90%] md:w-[40%] max-w-sm my-24 mx-auto">
-        <h1 className="text-center text-skin-black-base text-2xl font-semibold">
-            {authType === _authTypes.login ? "Login To Taskify" : "Sign up to Taskify"}
-        </h1>
+    return <div className="h-screen flex justify-center items-center py-7">
+        <div className="w-[90%] max-w-sm mx-auto">        
+            <h1 className="text-center text-skin-black-base text-2xl font-semibold">
+                {authType === _authTypes.login ? "Login To Taskify" : "Sign up to Taskify"}
+            </h1>
 
-        <div>
+           
             {authType === _authTypes.login ? <Login /> : <SignUp />}
-        </div>
+           
 
-        <div className="text-center my-5">
-            {
-                authType === _authTypes.login ? 
-                <>
-                    <p className="text-skin-black-muted">Don't have an account ? </p>
-                    <button onClick={()=>setAuthType(_authTypes.signUp)}>Create an account</button>
-                </> 
-                :
-                <>
-                    <p className="text-skin-black-muted">Already have an account ? </p>
-                    <button onClick={()=>setAuthType(_authTypes.login)}>Sign in to your account</button>
-                </>
-            }
+            <div className="text-center my-6">
+                {
+                    authType === _authTypes.login ? 
+                    <>
+                        <p className="text-skin-black-muted mb-2">Don't have an account ? </p>
+                        <button onClick={()=>setAuthType(_authTypes.signUp)}>Create an account</button>
+                    </> 
+                    :
+                    <>
+                        <p className="text-skin-black-muted mb-2">Already have an account ? </p>
+                        <button onClick={()=>setAuthType(_authTypes.login)}>Sign in to your account</button>
+                    </>
+                }
+            </div>
         </div>
 
     </div>

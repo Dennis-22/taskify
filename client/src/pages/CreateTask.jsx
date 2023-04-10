@@ -30,7 +30,7 @@ export default function CreateTask() {
     }
 
     return <Container>
-        <div className="w-[40%] my-5 mx-auto">
+        <div className="w-[90%] max-w-sm my-5 mx-auto">
             <h1 className="text-center text-skin-black-base text-xl">Create a task</h1>
             <form>
                 <div className="my-7">
@@ -71,7 +71,7 @@ export default function CreateTask() {
                         <div className="m-2">
                             <p className="text-skin-black-muted text-sm mb-1">Start at</p>
                             <input type="date" placeholder="start at"
-                                className="p-2 border-2 border-skin-border-color"
+                                className="w-full p-2 border-2 border-skin-border-color"
                                 onChange={(e)=>handleDateChange(e, 'start')}
                             />
                         </div>
@@ -79,7 +79,7 @@ export default function CreateTask() {
                         <div className="m-2">
                             <p className="text-skin-black-muted text-sm mb-1">End at</p>
                             <input type="date" placeholder="start at"
-                                className="p-2 border-2 border-skin-border-color"
+                                className="w-full p-2 border-2 border-skin-border-color"
                                 onChange={(e)=>handleDateChange(e, 'end')}
                             />
                         </div>
@@ -87,7 +87,7 @@ export default function CreateTask() {
                 </div>
                 <Button 
                     text="Create task"
-                    className="bg-skin-btn-blue"
+                    className="mx-auto bg-skin-btn-blue"
                     onClick={handleSubmit}
                     textClassName="text-skin-white-base"
                 />

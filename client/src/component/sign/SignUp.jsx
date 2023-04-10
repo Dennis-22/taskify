@@ -1,20 +1,46 @@
-import { useState } from "react"
+import { useLayoutEffect, useState } from "react"
+import { useNavigate } from "react-router-dom"
+import {useUserContext} from '../../context/user/UserContext'
 import Input from "../global/Input"
 import Button from "../global/Button"
+import { signUpRoute } from "../../utils/api"
+import { _user, _pages } from "../../utils/constance"
 
 export default function SignUp(){
+    const {userDispatch, userState:{signedIn}} = useUserContext()
     const [userDetails, setUserDetails] = useState({email:"", username: "", password:"", confirmPassword:""})
     const [process, setProcess] = useState({loading:false, error:""})
+    const navigate = useNavigate()
     
     const handleChange = (text, name)=>{
         setProcess((cur)=> ({...cur, error:""})) //remove any error if there is
         setUserDetails((cur) => ({...cur, [name]:text}))
     }
 
-    const handleSubmit = (e)=>{
+    const handleSubmit = async(e)=>{
         e.preventDefault()
-        setProcess((cur)=> ({...cur, error:"This is an error"}))
+        // check if all inputs are filled
+        for(let field in userDetails){
+            if(userDetails[field] === "") return setProcess({loading:false, error:`${field} is empty`})
+        }
+        if(userDetails.password !== userDetails.confirmPassword) return setProcess({loading:false, error:"Password does not match with confirm password"})
+
+        setProcess({loading:true, error:""})
+
+        try {
+            const registerUser = await signUpRoute(userDetails)
+            userDispatch({type:_user.SIGN, payload:registerUser.data.data})
+        } catch (error) {
+            console.log(error)
+            let errorResponse = error.response && error.response.data.message // if error from the backend
+            setProcess({loading:false, error: errorResponse || 'An error occurred please try again'})
+        }
     }
+
+    useLayoutEffect(()=>{
+        // when user is already signed in redirect to dashboard
+        if(signedIn === true) navigate(_pages.DASHBOARD)
+    },[signedIn])
 
     return <form>
         {
@@ -51,7 +77,7 @@ export default function SignUp(){
 
             <Input 
                 label="Confirm Password"
-                placeholder="Email"
+                placeholder="Confirm password"
                 value={userDetails.confirmPassword} 
                 handleChange={(text)=>handleChange(text, 'confirmPassword')}
                 className="my-5"

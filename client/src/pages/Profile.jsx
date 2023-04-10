@@ -11,7 +11,7 @@ import Input from "../component/global/Input";
 export default function Profile() {
     const {userState:{user}, userDispatch} = useUserContext()
     const [showLogoutAlert, setShowLogoutAlert] = useState(false)
-    const [showDeleteAccount, setShowDeleteAccount] = useState(true)
+    const [showDeleteAccount, setShowDeleteAccount] = useState(false)
     const navigate = useNavigate()
     const {username, email} = user
 
