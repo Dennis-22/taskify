@@ -3,6 +3,7 @@ const _pages = {
     SIGN:"/sign",
     DASHBOARD:"/dashboard",
     CREATE_TASK:"/create-task",
+    EDIT_TASK:"/edit-task",
     TASK_DETAILS:"/task-details",
     PROFILE:"/profile",
 }
@@ -19,4 +20,11 @@ const _user = {
     LOG_OUT:"LOG_OUT"
 }
 
-export {_pages, _tasks, _user}
+const _toasts = {
+    SUCCESS: 'success',
+    ERROR: 'error',
+    WARNING: 'warning'
+}
+
+
+export {_pages, _tasks, _user, _toasts}

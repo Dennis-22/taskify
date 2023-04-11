@@ -14,7 +14,7 @@ app.use(express.json())
 app.use(morgan('tiny'))
 
 app.get('/', (req, res)=>{
-    sendMessage(res, "Welcome to taskify")
+    sendMessage(res, "Welcome to Taskify server")
 })
 
 app.use(`/${baseRoute}/users`, require('./routes/users'))

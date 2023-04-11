@@ -10,6 +10,7 @@ import { _pages } from "../utils/constance";
 export default function Dashboard(){
     const {taskState:{tasks}} = useTaskContext()
     const navigate = useNavigate()
+
     return <Container>
         <>       
             <p className="text-skin-black-base text-xl">Good Afternoon username</p>
@@ -23,7 +24,7 @@ export default function Dashboard(){
                     icon={<CgFolderAdd className="text-skin-white-base"/>}
                 />
             </div>
-            <div className="w-[90%] mx-auto flex gap-4 flex-wrap">
+            <div className="w-[90%] mx-auto flex gap-4 flex-wrap justify-center">
                 {tasks.map((task, idx) => <Task {...task} key={idx}/>)}
             </div>
         </>

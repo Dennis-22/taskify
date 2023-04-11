@@ -1,7 +1,9 @@
 import {_tasks} from '../../utils/constance'
 
 const state = {
-    data:[],
+    data:[
+        {id:'1', title:"Create a web app", description:"this is a task description", tag:"family", date:{start:"now", end:"later"}},
+    ],
     tasks:[
         {id:'1', title:"Create a web app", description:"this is a task description", tag:"family", date:{start:"now", end:"later"}},
         // {id:'1', title:"Create a web app", description:"this is a task description", tag:"family", date:{start:"now", end:"later"}},
@@ -31,8 +33,8 @@ function taskReducer(state, action){
             return {...state, data:newTasks, tasks:newTasks}
         }
         case(_tasks.DELETE_TASK):{
-            let newTasks = task.data.filter(task => task.id !== id)
-            return {...task, data:newTasks, tasks:newTasks}
+            let newTasks = state.data.filter(task => task.id !== payload)
+            return {...state, data:newTasks, tasks:newTasks}
         }
     }
     return state

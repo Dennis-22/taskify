@@ -1,7 +1,15 @@
+import { useNavigate } from "react-router-dom";
 import { BsCalendarDate } from "react-icons/bs";
 import Tag from "./Tag"
-export default function Task({title, description, tag, date}){
-  return <div className="w-[22%] bg-skin-white p-2 rounded-lg cursor-pointer border border-gray-300 shadow-md hover:shadow-lg">
+import { _pages } from "../../utils/constance";
+
+export default function Task({id, title, description, tag, date}){
+  const navigate = useNavigate()
+
+  return <div
+    onClick={()=>navigate(`${_pages.TASK_DETAILS}/${id}`)} 
+    className="w-[95%] md:w-[90%] md:max-w-xs bg-skin-white p-2 rounded-lg cursor-pointer border border-gray-300 shadow-md hover:shadow-lg"
+  >
     <p className="text-xl mb-1">{title}</p>
     <Tag tag={tag}/>
     <div className="my-3">

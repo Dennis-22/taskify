@@ -1,8 +1,8 @@
 import {_user} from '../../utils/constance'
 
 const state = {
-    user:{},
-    signedIn:false
+    user:{id:"1", username:"abankawa", email:"abankwa@mail"},
+    signedIn:true
 }
 
 function userReducer(state, action){

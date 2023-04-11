@@ -25,12 +25,22 @@ export default function Sign(){
                     authType === _authTypes.login ? 
                     <>
                         <p className="text-skin-black-muted mb-2">Don't have an account ? </p>
-                        <button onClick={()=>setAuthType(_authTypes.signUp)}>Create an account</button>
+                        <button 
+                            onClick={()=>setAuthType(_authTypes.signUp)}
+                            className="border-none outline-none" 
+                        >
+                            Create an account
+                        </button>
                     </> 
                     :
                     <>
                         <p className="text-skin-black-muted mb-2">Already have an account ? </p>
-                        <button onClick={()=>setAuthType(_authTypes.login)}>Sign in to your account</button>
+                        <button 
+                            onClick={()=>setAuthType(_authTypes.login)}
+                            className="border-none outline-none"
+                        >
+                            Sign in to your account
+                        </button>
                     </>
                 }
             </div>

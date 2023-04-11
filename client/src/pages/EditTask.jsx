@@ -1,5 +1,5 @@
-import { useState } from "react"
-import { useNavigate } from "react-router-dom"
+import { useState, useEffect } from "react"
+import { useNavigate, useParams } from "react-router-dom"
 import {useTaskContext} from '../context/task/TasksContext'
 import Input from "../component/global/Input"
 import Button from "../component/global/Button"
@@ -13,11 +13,28 @@ const _tags = [
     {id:'1', tag:'work'},
 ]
 
-export default function CreateTask() {
-    const {taskDispatch} = useTaskContext()
+export default function EditTask() {
+    const {taskState:{data}, taskDispatch} = useTaskContext()
     const [taskDetails, setTaskDetails] = useState({title:"", description:"", tag:"", date:{start:"", end:""}})
     const [process, setProcess] = useState(false) //loading
+    const {taskId} = useParams()
     const navigate = useNavigate()
+
+
+    const getTask = async()=>{
+        setProcess(true)
+        // if the task is not available locally, request from the backend
+        let localTask = data.find(task => task.id === taskId)
+        if(localTask) {
+            setTaskDetails(localTask)
+            setProcess(false)
+            return
+        }
+
+        //task is not available locally
+        console.log('fetching task')
+    }
+
 
     const handleChange = (text, name)=>{
         setTaskDetails((cur) => ({...cur, [name]:text}))
@@ -49,8 +66,12 @@ export default function CreateTask() {
         }
     }
 
+    useEffect(()=>{
+        getTask()
+    },[])
+
     return <div className="w-[90%] max-w-sm my-10 mx-auto">
-        <h1 className="text-center text-skin-black-base text-xl">Create a task</h1>
+        <h1 className="text-center text-skin-black-base text-xl">Edit task</h1>
         <form>
             <div className="my-7">
                 <Input 
