@@ -1,28 +1,34 @@
-const { writeToDb } = require('../database/mutateDb')
 const { generateRandomId } = require('../utils/utils')
-const tasks = require('../database/task.json')
+const {tasksCollection} = require('../db')
 
-function findAllTasks(userId){
-    return tasks.filter(task => task.userId === userId)
+async function findAllTasks(userId){
+    const tasksQuery = tasksCollection.find({userId:{$eq: userId}})
+    let userTasks = []
+    await tasksQuery.forEach(task => userTasks.push(task))
+    return userTasks
 }
 
-function findTask(taskId){
-    const task = tasks.find(task => task.id === taskId)
-    if(!task) throw new Error("No task found")
+async function findTask(taskId){
+    let task = await tasksCollection.findOne({id:taskId})
     return task
 }
 
 async function createTask(data){
-    const {title, description, date} = data
-    let newTask = {id:generateRandomId(), title, description, date, completed:false}
-    // await writeToDb('task', newTask)
+    const {userId, title, description, date} = data
+    let newTask = {id:generateRandomId(), userId, title, description, date, completed:false}
+    await tasksCollection.insertOne(newTask);
     return newTask
 }
 
-
-async function deleteTask(taskId){
-    let newTask = tasks.filter(task => task.id !== taskId) 
-    await writeToDb('task', newTask)
+async function editTask(taskId, newData){
+    await tasksCollection.updateOne(
+        {id: taskId},
+        {$set:newData}
+    )
 }
 
-module.exports = {findAllTasks, findTask, createTask, deleteTask}
+async function deleteTask(taskId){
+    await tasksCollection.deleteOne({id:taskId})
+}
+
+module.exports = {findAllTasks, findTask, createTask, editTask, deleteTask}

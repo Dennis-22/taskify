@@ -4,6 +4,6 @@ const uri = `mongodb+srv://${process.env.MONGODB_USERNAME}:${process.env.MONGODB
 
 const mongoDbClient = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 const usersCollection = mongoDbClient.db("taskify_db").collection('users');
+const tasksCollection = mongoDbClient.db("taskify_db").collection('tasks')
 
-
-module.exports ={usersCollection}
+module.exports ={usersCollection, tasksCollection}

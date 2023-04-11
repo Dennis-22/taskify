@@ -1,23 +1,26 @@
 const express = require('express')
 const { sendError, statusCodes, sendData, sendMessage } = require('../utils/response')
-const {findAllTasks, createTask, findTask, deleteTask} = require('../schemas/tasks')
-const { editDb } = require('../database/mutateDb')
+const {findAllTasks, createTask, findTask, deleteTask, editTask} = require('../schemas/tasks')
+
 
 const router = express.Router() 
-const {serverError, badRequest, notFound, notAccepted, ok, created} = statusCodes
+const {serverError, ok, created} = statusCodes
 
-router.get('/all/:userId', (req, res)=>{
+router.get('/:userId', async(req, res)=>{
+    // const userId = req.userId
+    const userId = req.params.userId
     try {
-        const usersTasks = findAllTasks(req.params.userId)
+        const usersTasks = await findAllTasks(userId)
         sendData(res, ok, usersTasks)
     } catch (error) {
         sendError(res, error, serverError, "Failed to get users tasks")
     }
 })
 
-router.get('/task/:taskId', (req, res)=>{
+router.get('/task/:taskId', async(req, res)=>{
+    const taskId = req.params.taskId
     try {
-        let task = findTask(req.params.taskId)
+        let task = await findTask(taskId)
         sendData(res, ok, task)
     } catch (error) {
         sendError(res, error, serverError, "Failed to get task")
@@ -25,8 +28,9 @@ router.get('/task/:taskId', (req, res)=>{
 })
 
 router.post('/create', async(req, res)=>{
+    const userId = req.userId
     try {
-        let newTask = await createTask(req.body)
+        let newTask = await createTask({...req.body, userId})
         sendData(res, created, newTask)
     } catch (error) {
         sendError(res, error, serverError, "Failed to create task")
@@ -34,28 +38,25 @@ router.post('/create', async(req, res)=>{
 })
 
 router.patch('/edit/:taskId', async(req, res)=>{
-    console.log('hit')
     try {
-        // await editDb('task', req.params.taskId, req.body)
-        // sendData(res, created, req.body)
-        sendData(res, created, ['done'])
+        await editTask(req.params.taskId, req.body)
+        sendData(res, created, req.body)
     } catch (error) {
         sendError(res, error, serverError, "Failed to edit task")
     }
 })
 
-router.patch('/task/complete/:taskId', async(req, res)=>{
-    console.log('hit')
+router.patch('/complete/:taskId', async(req, res)=>{
+    const taskId = req.params.taskId
     try {
-        let completeTask = {completed:true}
-        await editDb('task', req.params.taskId, completeTask)
+        await editTask(taskId, {completed:true})
         sendMessage(res, "Task completed")
     } catch (error) {
         sendError(res, error, serverError, "Failed to complete task")
     }
 })
 
-router.delete('/:taskId', async(req, res)=> {
+router.delete('/delete/:taskId', async(req, res)=> {
     try {
         await deleteTask(req.params.taskId)
         sendMessage(res, 'Task deleted')
