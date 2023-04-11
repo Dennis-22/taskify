@@ -15,7 +15,7 @@ function findTask(taskId){
 async function createTask(data){
     const {title, description, date} = data
     let newTask = {id:generateRandomId(), title, description, date, completed:false}
-    await writeToDb('task', newTask)
+    // await writeToDb('task', newTask)
     return newTask
 }
 

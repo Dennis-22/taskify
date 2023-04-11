@@ -1,7 +1,8 @@
 const express = require('express')
 const { sendError, statusCodes, sendData, sendMessage } = require('../utils/response')
-const { doesUserEmailExist, getUser, createUser} = require('../schemas/user')
-const {deleteFromDb, editDb} = require('../database/mutateDb')
+const { doesUserEmailExist, getUser, createUser, deleteUser, editUser} = require('../schemas/user')
+const verifyJWT = require('../middleware/verifyJWT')
+
 
 const router = express.Router() 
 const {serverError, badRequest, notFound, notAccepted, ok, created} = statusCodes
@@ -9,14 +10,16 @@ const {serverError, badRequest, notFound, notAccepted, ok, created} = statusCode
 router.post('/login',async(req, res)=>{
     const {email, password} = req.body
     try{
-        const userExist = doesUserEmailExist(email)
+        const userExist = await doesUserEmailExist(email)
+        
         if(!userExist) return sendError(res, "No user", notFound, "Email does not exist")
 
         const gettingUser = await getUser(email, password)
         if(gettingUser.success === false){
             return sendError(res, "Incorrect password", badRequest, gettingUser.text)
         }
-        sendData(res, ok, gettingUser.userDate)
+        sendData(res, ok, gettingUser.data)
+        
     } catch (error) {
         return sendError(res, error, serverError, "Failed to login")
     }
@@ -25,8 +28,9 @@ router.post('/login',async(req, res)=>{
 router.post('/signup', async(req, res)=>{
     const {username, password, email, confirmPassword} = req.body
     try {
-        const userExist = doesUserEmailExist(email)
+        const userExist = await doesUserEmailExist(email)
         if(userExist) return sendError(res, "Email exist", notAccepted, "Email already exist")
+        
         if(password !== confirmPassword){
             return sendError(res, 'Passwords mismatch', statusCodes.notAccepted, "Password and confirm password does not match")
         }
@@ -38,21 +42,20 @@ router.post('/signup', async(req, res)=>{
     }
 })
 
-router.patch('/edit/:userId', async(req,res)=>{
-    const userId = req.params.userId
+router.patch('/edit', verifyJWT, async(req,res)=>{
+    const userId = req.userId
     try {
-        await editDb('users', userId, req.body)
+        await editUser(userId, req.body)
         sendData(res, created, req.body)
     } catch (error) {
         sendError(res, error, serverError, "Failed to edit account")
     }
-    res.send('/edit account')
 })
 
-router.delete('/delete/userId', async(req, res)=>{
-    const userId = req.params.userId
+router.delete('/delete', verifyJWT, async(req, res)=>{
+    const userId = req.userId
     try {
-        await deleteFromDb('users', userId)
+        await deleteUser(userId)
         sendMessage(res, "User account deleted")
     } catch (error) {
         sendError(res, error, serverError, "Failed to delete account")

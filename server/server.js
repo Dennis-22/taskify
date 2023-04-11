@@ -2,7 +2,7 @@ const express = require('express')
 const cors = require('cors')
 const morgan = require('morgan')
 const {sendMessage} = require('./utils/response')
-require('dotenv').config
+require('dotenv').config()
 
 const app = express()
 const PORT = process.env.PORT || 4000

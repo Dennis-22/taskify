@@ -21,6 +21,8 @@ const statusCodes = {
     ok:200,
     created:201,
     badRequest:400,
+    notAuthorized:401,
+    forbidden:403,
     notFound:404,
     notAccepted:406,
     serverError:500
