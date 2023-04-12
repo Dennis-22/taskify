@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom"
 import {useUserContext} from '../../context/user/UserContext'
 import Input from "../global/Input"
 import Button from "../global/Button"
+import Loader from "../global/Loader"
 import { loginRoute } from "../../utils/api"
 import { _pages, _user } from "../../utils/constance"
 
@@ -29,11 +30,11 @@ export default function Login(){
         for(let field in userDetails){
             if(userDetails[field] === "") return setProcess({loading:false, error:`${field} is empty`})
         }
-
         setProcess({loading:true, error:""})
-       
         try {
             const signUser = await loginRoute(userDetails)
+            // store user info to session storage
+            sessionStorage.setItem('user', JSON.stringify(signUser.data.data))
             userDispatch({type:_user.SIGN, payload:signUser.data.data})
             // the useLayoutEffect ensures the redirecting to user's dashboard
         } catch (error) {
@@ -56,6 +57,7 @@ export default function Login(){
             <Input 
                 label="Email"
                 placeholder="Email"
+                type="email"
                 value={userDetails.email} 
                 handleChange={(text)=>handleChange(text, 'email')}
                 className="my-5"
@@ -64,13 +66,14 @@ export default function Login(){
             <Input 
                 label="Password"
                 placeholder="password"
+                type="password"
                 value={userDetails.password} 
                 handleChange={(text)=>handleChange(text, 'password')}
                 className="my-5"
             />
         </div>
         {
-            process.loading ? <p>Loading</p> :
+            process.loading ? <Loader loading={process.loading}/> :
             <Button 
                 text="Log in"
                 className="bg-skin-btn-blue mx-auto"

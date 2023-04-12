@@ -27,7 +27,7 @@ export default function App() {
               <Route path={_pages.CREATE_TASK} element={<CreateTask />}/>
               <Route path={`${_pages.EDIT_TASK}/:taskId`} element={<EditTask />}/>
               <Route path={`${_pages.TASK_DETAILS}/:taskId`} element={<TaskDetails />}/>
-              <Route path={`${_pages.PROFILE}/:userId`} element={<Profile />}/>
+              <Route path={`${_pages.PROFILE}/:username`} element={<Profile />}/>
             </Routes>
           </Router>
         </Layout>

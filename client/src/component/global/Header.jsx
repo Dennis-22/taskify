@@ -36,7 +36,7 @@ function UserProfile({user, navigate, location}){
     if(location.pathname.split('/')[1] === _pages.PROFILE.split('/')[1]) return null
 
     return <div
-        onClick={()=>navigate(`${_pages.PROFILE}/${user.id}`)} 
+        onClick={()=>navigate(`${_pages.PROFILE}/${user.username}`)} 
         className="h-12 w-12 flex justify-center items-center bg-skin-yellow cursor-pointer rounded-full shadow-lg"
     >
         <p>{user.username.charAt(0)}</p>

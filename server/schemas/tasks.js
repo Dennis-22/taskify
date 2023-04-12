@@ -14,8 +14,8 @@ async function findTask(taskId){
 }
 
 async function createTask(data){
-    const {userId, title, description, date} = data
-    let newTask = {id:generateRandomId(), userId, title, description, date, completed:false}
+    const {userId, title, description, tag, date} = data
+    let newTask = {id:generateRandomId(), userId, title, description, tag, date, completed:false}
     await tasksCollection.insertOne(newTask);
     return newTask
 }

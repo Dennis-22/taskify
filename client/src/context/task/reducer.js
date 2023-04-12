@@ -1,26 +1,19 @@
 import {_tasks} from '../../utils/constance'
 
+// {id:'1', title:"Create a web app", description:"this is a task description", tag:"family", date:{start:"now", end:"later"}},
 const state = {
-    data:[
-        {id:'1', title:"Create a web app", description:"this is a task description", tag:"family", date:{start:"now", end:"later"}},
-    ],
-    tasks:[
-        {id:'1', title:"Create a web app", description:"this is a task description", tag:"family", date:{start:"now", end:"later"}},
-        // {id:'1', title:"Create a web app", description:"this is a task description", tag:"family", date:{start:"now", end:"later"}},
-        // {id:'1', title:"Create a web app", description:"this is a task description", tag:"family", date:{start:"now", end:"later"}},
-        // {id:'1', title:"Create a web app", description:"this is a task description", tag:"family", date:{start:"now", end:"later"}},
-        // {id:'1', title:"Create a web app", description:"this is a task description", tag:"family", date:{start:"now", end:"later"}},
-    ]
+    data:[],
+    tasks:[],
+    fetched:false, //has the tasks been fetch from the backend
 }
 
 function taskReducer(state, action){
     const {type, payload} = action
     switch(type){
         case(_tasks.GET_TASKS):
-            return {...state, data:payload, tasks:payload}
+            return {...state, data:payload, tasks:payload, fetched:true}
         case(_tasks.ADD_TASK):{
             let newTasks = [...state.data, payload]
-            console.log(newTasks)
             return {...state, data:newTasks, tasks:newTasks}
         }
         case(_tasks.EDIT_TASK):{

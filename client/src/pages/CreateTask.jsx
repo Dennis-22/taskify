@@ -1,11 +1,14 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import {useTaskContext} from '../context/task/TasksContext'
+import { useUserContext } from "../context/user/UserContext"
 import Input from "../component/global/Input"
 import Button from "../component/global/Button"
 import Tag from "../component/task/Tag"
+import Loader from "../component/global/Loader"
 import { notify } from "../component/global/Toast"
 import { _pages, _tasks, _toasts } from "../utils/constance"
+import { createTasksRoute } from "../utils/api"
 
 const _tags = [
     {id:'1', tag:'family'},
@@ -14,6 +17,7 @@ const _tags = [
 ]
 
 export default function CreateTask() {
+    const {userState:{user:{accessToken}}} = useUserContext()
     const {taskDispatch} = useTaskContext()
     const [taskDetails, setTaskDetails] = useState({title:"", description:"", tag:"", date:{start:"", end:""}})
     const [process, setProcess] = useState(false) //loading
@@ -38,8 +42,10 @@ export default function CreateTask() {
         
         setProcess(true)
         try {
-            
-            taskDispatch({type:_tasks.ADD_TASK, payload:taskDetails})
+            let createTask = await createTasksRoute(taskDetails, accessToken)
+            console.log('created', createTask.data.data)
+            taskDispatch({type:_tasks.ADD_TASK, payload:createTask.data.data})
+            notify(_toasts.SUCCESS, "Task created successfully")
             navigate(_pages.DASHBOARD)
         } catch (error) {
             console.log(error)
@@ -107,7 +113,7 @@ export default function CreateTask() {
                 </div>
             </div>
             {
-                process ? <h1>Loading</h1> :
+                process ? <Loader /> :
                 <Button 
                     text="Create task"
                     className="mx-auto bg-skin-btn-blue"

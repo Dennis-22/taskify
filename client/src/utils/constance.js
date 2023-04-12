@@ -17,7 +17,8 @@ const _tasks = {
 
 const _user = {
     SIGN:"SIGN",
-    LOG_OUT:"LOG_OUT"
+    LOG_OUT:"LOG_OUT",
+    UPDATE_USERNAME:"UPDATE_USERNAME"
 }
 
 const _toasts = {

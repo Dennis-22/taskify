@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom"
 import {useUserContext} from '../../context/user/UserContext'
 import Input from "../global/Input"
 import Button from "../global/Button"
+import Loader from "../global/Loader"
 import { signUpRoute } from "../../utils/api"
 import { _user, _pages } from "../../utils/constance"
 
@@ -29,6 +30,8 @@ export default function SignUp(){
 
         try {
             const registerUser = await signUpRoute(userDetails)
+            // store user info to session storage
+            sessionStorage.setItem('user', JSON.stringify(registerUser.data.data))
             userDispatch({type:_user.SIGN, payload:registerUser.data.data})
         } catch (error) {
             console.log(error)
@@ -53,6 +56,7 @@ export default function SignUp(){
         <div className="my-7">
             <Input 
                 label="Email"
+                type="email"
                 placeholder="Email"
                 value={userDetails.email} 
                 handleChange={(text)=>handleChange(text, 'email')}
@@ -83,11 +87,17 @@ export default function SignUp(){
                 className="my-5"
             />
         </div>
-        <Button 
-            text="Sign up"
-            className="bg-skin-btn-blue mx-auto"
-            onClick={handleSubmit}
-            textClassName="text-skin-white-base"
-        />
+
+        {
+            process.loading ? <Loader loading={process.loading}/> :
+
+            <Button 
+                text="Sign up"
+                className="bg-skin-btn-blue mx-auto"
+                onClick={handleSubmit}
+                textClassName="text-skin-white-base"
+            />
+        }
+
     </form>
 }

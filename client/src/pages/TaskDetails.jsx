@@ -1,39 +1,60 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { useUserContext } from "../context/user/UserContext";
 import { useTaskContext } from "../context/task/TasksContext";
 import Button from "../component/global/Button";
 import Tag from "../component/task/Tag";
 import Modal from "../component/global/Modal";
-import { _tasks, _pages, _toasts } from "../utils/constance";
+import Loader from "../component/global/Loader";
 import { notify } from "../component/global/Toast";
+import { _tasks, _pages, _toasts } from "../utils/constance";
+import { deleteTasksRoute, findATaskRoute } from "../utils/api";
 
 export default function TaskDetails() {
+    const {userState:{user:{accessToken}}} = useUserContext()
     const {taskState:{data}, taskDispatch} = useTaskContext()
     const [taskDetails, setTaskDetails] = useState({id:"", title:"", description:"", date:{start:"", end:""}})
     const [showDeleteTask, setShowDeleteTask] = useState(false)
-    const [process, setProcess] = useState(false) //loading when getting the task from backend
+    const [process, setProcess] = useState({getting:false, deleting:true}) //loading when getting the task from backend 
     const {taskId} = useParams()
     const navigate = useNavigate()
     const {title, description, tag, date} = taskDetails
 
     const getTask = async()=>{
-        setProcess(true)
+        setProcess({getting:true, deleting:false})
         // if the task is not available locally, request from the backend
         let localTask = data.find(task => task.id === taskId)
         if(localTask) {
             setTaskDetails(localTask)
-            setProcess(false)
+            setProcess({getting:false, deleting:false})
             return
         }
 
         //task is not available locally
-        console.log('fetching task')
+        try {
+            let request = await findATaskRoute(taskId, accessToken)
+            let task = request.data.data
+            setTaskDetails(task)
+            setProcess({getting:false, deleting:false})
+        } catch (error) {
+            notify(_toasts.ERROR, "Failed to get task")
+            navigate(_pages.DASHBOARD)
+        }
+        
     }
 
-    const deleteTask = ()=>{
-        taskDispatch({type:_tasks.DELETE_TASK, payload:taskId})
-        notify(_toasts.SUCCESS, "Task deleted")
-        navigate(_pages.DASHBOARD)
+    const deleteTask = async()=>{
+        setProcess({getting:false, deleting:false})
+        setShowDeleteTask(false)
+        try {
+            await deleteTasksRoute(taskId, accessToken)
+            taskDispatch({type:_tasks.DELETE_TASK, payload:taskId})
+            notify(_toasts.SUCCESS, "Task deleted")
+            navigate(_pages.DASHBOARD)
+        } catch (error) {
+            setProcess({getting:false, deleting:false})
+            notify(_toasts.ERROR, "Failed to delete task")
+        }
     }
 
     useEffect(()=>{
@@ -43,7 +64,11 @@ export default function TaskDetails() {
     return <>
         <div className="w-[90%] max-w-sm my-10 mx-auto">
             {
-                process ? <h1>Loading</h1> :
+                process.getting ? (
+                    <div className="mt-40">
+                        <Loader />
+                    </div>
+                ) :
 
                 <>
                     <h1 className="text-skin-black-base text-2xl font-semibold text-center">Task Details</h1>
@@ -77,22 +102,30 @@ export default function TaskDetails() {
                             </p>
                         </div>
                     </section>
+                    
+                    {
+                        process.deleting ? (
+                            <div className="mt-10">
+                                <Loader />
+                            </div>
+                        ) :
+                        <div className="flex gap-4 justify-center mt-8">
+                            <Button 
+                                text="Edit task"
+                                onClick={()=>navigate(`${_pages.EDIT_TASK}/${taskId}`)}
+                                className="bg-skin-btn-blue"
+                                textClassName="text-skin-white-base"
+                            /> 
 
-                    <div className="flex gap-4 justify-center mt-8">
-                        <Button 
-                            text="Edit task"
-                            onClick={()=>navigate(`${_pages.EDIT_TASK}/${taskId}`)}
-                            className="bg-skin-btn-blue"
-                            textClassName="text-skin-white-base"
-                        /> 
+                            <Button 
+                                text="Delete task"
+                                onClick={()=>setShowDeleteTask(true)}
+                                className="bg-skin-btn-red"
+                                textClassName="text-skin-white-base"
+                            /> 
+                        </div>
+                    }                    
 
-                        <Button 
-                            text="Delete task"
-                            onClick={()=>setShowDeleteTask(true)}
-                            className="bg-skin-btn-red"
-                            textClassName="text-skin-white-base"
-                        /> 
-                    </div>
                 </>
             }
         </div>

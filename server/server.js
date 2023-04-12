@@ -19,7 +19,7 @@ app.get('/', (req, res)=>{
 })
 
 app.use(`/${baseRoute}/users`, require('./routes/users'))
-app.use(`/${baseRoute}/tasks`, require('./routes/tasks'))
+app.use(`/${baseRoute}/tasks`, verifyJWT, require('./routes/tasks'))
 
 app.listen(PORT, ()=> console.log(`Started on ${PORT}`))
 

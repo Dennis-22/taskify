@@ -7,8 +7,7 @@ const router = express.Router()
 const {serverError, ok, created} = statusCodes
 
 router.get('/:userId', async(req, res)=>{
-    // const userId = req.userId
-    const userId = req.params.userId
+    const userId = req.userId
     try {
         const usersTasks = await findAllTasks(userId)
         sendData(res, ok, usersTasks)
@@ -29,6 +28,7 @@ router.get('/task/:taskId', async(req, res)=>{
 
 router.post('/create', async(req, res)=>{
     const userId = req.userId
+    console.log('hit with id', userId)
     try {
         let newTask = await createTask({...req.body, userId})
         sendData(res, created, newTask)

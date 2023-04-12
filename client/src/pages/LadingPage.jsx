@@ -18,7 +18,10 @@ export default function LadingPage(){
             <span className="block">and well presented to you</span>
         </h1>
         <Button 
-            text="Sign up"
+            text="Start organizing your task now"
+            onClick={()=>navigate(_pages.SIGN)}
+            className="mx-auto bg-skin-btn-blue"
+            textClassName="text-skin-white-base"
         />
     </div>
 }
