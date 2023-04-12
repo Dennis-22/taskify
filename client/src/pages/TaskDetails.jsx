@@ -15,7 +15,7 @@ export default function TaskDetails() {
     const {taskState:{data}, taskDispatch} = useTaskContext()
     const [taskDetails, setTaskDetails] = useState({id:"", title:"", description:"", date:{start:"", end:""}})
     const [showDeleteTask, setShowDeleteTask] = useState(false)
-    const [process, setProcess] = useState({getting:false, deleting:true}) //loading when getting the task from backend 
+    const [process, setProcess] = useState({getting:false, deleting:false}) //loading when getting the task from backend 
     const {taskId} = useParams()
     const navigate = useNavigate()
     const {title, description, tag, date} = taskDetails
@@ -44,7 +44,7 @@ export default function TaskDetails() {
     }
 
     const deleteTask = async()=>{
-        setProcess({getting:false, deleting:false})
+        setProcess({getting:false, deleting:true})
         setShowDeleteTask(false)
         try {
             await deleteTasksRoute(taskId, accessToken)
@@ -63,15 +63,11 @@ export default function TaskDetails() {
 
     return <>
         <div className="w-[90%] max-w-sm my-10 mx-auto">
+            <h1 className="text-skin-black-base text-2xl font-semibold text-center">Task Details</h1>
             {
-                process.getting ? (
-                    <div className="mt-40">
-                        <Loader />
-                    </div>
-                ) :
-
+                process.getting ? <Loader className="mt-40"/>    
+                :
                 <>
-                    <h1 className="text-skin-black-base text-2xl font-semibold text-center">Task Details</h1>
 
                     <section className="my-4 bg-skin-white py-4 px-5 rounded-lg">
                         <p className="mb-2 text-xl font-medium">Title</p>
@@ -104,11 +100,8 @@ export default function TaskDetails() {
                     </section>
                     
                     {
-                        process.deleting ? (
-                            <div className="mt-10">
-                                <Loader />
-                            </div>
-                        ) :
+                        process.deleting ? <Loader className="mt-10"/>
+                        :
                         <div className="flex gap-4 justify-center mt-8">
                             <Button 
                                 text="Edit task"
@@ -142,7 +135,7 @@ export default function TaskDetails() {
 
 function DeleteTask({isOpen, onClose, deleteTask}){
     return <Modal isOpen={isOpen}>
-        <p className="text-2xl font-medium text-center">Delete Task</p>
+        <p className="text-lg text-skin-black-base font-medium text-center">Delete Task</p>
         <div className="flex justify-center gap-4 mt-6">
             <Button 
                 text="Delete"

@@ -6,13 +6,15 @@ const override = {
     textAlign:'center',
 }
 
-export default function Loader({loading}){
-    return <SyncLoader
-    color={"#0B7FEA"}
-    loading={loading}
-    cssOverride={override}
-    size={10}
-    aria-label="Loading Spinner"
-    data-testid="loader"
-  />
+export default function Loader({className, loading}){
+  return <div className={className}>
+    <SyncLoader
+      color={"#0B7FEA"}
+      cssOverride={override}
+      loading={loading}
+      size={10}
+      aria-label="Loading Spinner"
+      data-testid="loader"
+    />
+  </div>
 }

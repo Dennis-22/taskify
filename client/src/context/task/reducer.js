@@ -17,7 +17,7 @@ function taskReducer(state, action){
             return {...state, data:newTasks, tasks:newTasks}
         }
         case(_tasks.EDIT_TASK):{
-            let newTasks = state.task.map((task) => {
+            let newTasks = state.tasks.map((task) => {
                 if(task.id === payload.id){
                     return {...task, ...payload.data}
                 }

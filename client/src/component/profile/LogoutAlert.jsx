@@ -2,7 +2,7 @@ import Modal from "../global/Modal"
 import Button from "../global/Button"
 export default function LogoutAlert({logOut, isOpen, onClose}){
     return <Modal isOpen={isOpen}>
-        <p className="text-2xl font-medium text-center">Confirm Logout</p>
+        <p className="text-lg text-skin-black-base font-medium text-center">Confirm Logout</p>
         <div className="flex justify-center gap-4 mt-6">
             <Button 
                 text="Log out"

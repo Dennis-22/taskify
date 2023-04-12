@@ -43,7 +43,6 @@ export default function CreateTask() {
         setProcess(true)
         try {
             let createTask = await createTasksRoute(taskDetails, accessToken)
-            console.log('created', createTask.data.data)
             taskDispatch({type:_tasks.ADD_TASK, payload:createTask.data.data})
             notify(_toasts.SUCCESS, "Task created successfully")
             navigate(_pages.DASHBOARD)
@@ -113,7 +112,7 @@ export default function CreateTask() {
                 </div>
             </div>
             {
-                process ? <Loader /> :
+                process ? <Loader loading={process}/> :
                 <Button 
                     text="Create task"
                     className="mx-auto bg-skin-btn-blue"

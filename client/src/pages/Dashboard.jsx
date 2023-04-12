@@ -14,7 +14,7 @@ import { getAllTasksRoute } from "../utils/api";
 
 export default function Dashboard(){
     const {userState:{signedIn, user:{id, accessToken}}} = useUserContext()
-    const {taskDispatch, taskState:{tasks, fetched}} = useTaskContext()
+    const {taskDispatch, taskState:{data, tasks, fetched}} = useTaskContext()
     const [process, setProcess] = useState({loading:false, error:""})
     const navigate = useNavigate()
 
@@ -27,7 +27,6 @@ export default function Dashboard(){
             taskDispatch({type:_tasks.GET_TASKS, payload:userTasks})
             setProcess({loading:false, error:""})
         } catch (error) {
-            console.log(error)
             let errorResponse = error.response && error.response.data.message // if error from the backend
             setProcess({loading:false, error:errorResponse || "Failed to get tasks"})
         }
@@ -56,27 +55,40 @@ export default function Dashboard(){
             </div>
 
             {
-                process.loading ? (
-                    <div className="mt-[150px]">
-                        <Loader />
-                    </div>
-                ) :
-                process.error ? (
-                    <div className="mt-[150px] text-center">
-                        <p className="text-xl">{process.error}</p>
-                        <Button 
-                            text="Retry"
-                            onClick={getTasks}
-                            className="mt-6 mx-auto bg-skin-btn-blue border border-bg-skin-btn-red"
-                            textClassName="text-skin-white-base"
-                        />
-                    </div>
-                ) :
-                <div className="w-[90%] mx-auto flex gap-4 flex-wrap justify-center">
-                    {tasks.map((task, idx) => <Task {...task} key={idx}/>)}
-                </div>
+                process.loading ? <Loader className="mt-[150px]"/> :
+                process. error ? <DisplayError getTasks={getTasks}/> :
+                tasks.length === 0 ? <DisplayEmptyTasks
+                    // different messages based on whether user don't have any task or they don't have task on what they are filtering  
+                    text={data.length === 0 ? "You do not have any task" : "You do not have any task here"}
+                /> :
+                <DisplayTasks />
             }
 
         </>
     </Container>
+}
+
+function DisplayTasks({tasks}){
+    return <div className="w-[90%] mx-auto flex gap-4 flex-wrap justify-center">
+        {tasks.map((task, idx) => <Task {...task} key={idx}/>)}
+    </div>
+}
+
+function DisplayError({getTasks}){
+    return <div className="mt-[150px] text-center">
+        <p className="text-xl">{process.error}</p>
+        <Button 
+            text="Retry"
+            onClick={getTasks}
+            className="mt-6 mx-auto bg-skin-btn-blue border border-bg-skin-btn-red"
+            textClassName="text-skin-white-base"
+        />
+    </div>
+}
+
+function DisplayEmptyTasks({text}){
+    return <div>
+        <TbFilesOff />
+        <p>{text}</p>
+    </div>
 }

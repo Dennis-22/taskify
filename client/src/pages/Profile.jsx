@@ -5,10 +5,10 @@ import {Container} from '../component/global/Layout'
 import Button from "../component/global/Button";
 import LogoutAlert from "../component/profile/LogoutAlert";
 import DeleteAccount from "../component/profile/DeleteAccount";
-import { _pages, _toasts, _user } from "../utils/constance";
 import Input from "../component/global/Input";
 import Loader from "../component/global/Loader";
 import { notify } from "../component/global/Toast"
+import { _pages, _toasts, _user } from "../utils/constance";
 import { editUserRoute } from "../utils/api";
 
 export default function Profile() {
@@ -52,13 +52,9 @@ export default function Profile() {
         // console.log(updateDetails.username)
     }
 
-    const deleteAccount = ()=>{
-
-    }
-
     return <>    
         <Container>
-            <div className="w-[90%] md:w-5/12 max-w-sm mx-auto">
+            <div className="w-[90%] md:w-5/12 max-w-sm mx-auto my-10">
                 <section className="text-center">
                     <div className="h-20 w-20 flex justify-center items-center mx-auto mb-5 bg-white rounded-full shadow-lg">
                         <p>{username.charAt(0)}</p>
@@ -128,7 +124,6 @@ export default function Profile() {
         {showDeleteAccount && <DeleteAccount 
                 onClose={()=>setShowDeleteAccount(false)}
                 isOpen={showDeleteAccount}
-                deleteAccount={deleteAccount}
             />
 
         }
