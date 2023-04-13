@@ -16,8 +16,8 @@ export default function Header(){
     // don't show the header on the sign page
     if(location.pathname === _pages.SIGN) return null
 
-    return <div className="px-11 py-5 flex justify-between items-center">
-        <h1 onClick={handleLogoPress} className="text-2xl font-bold cursor-pointer">Tasky</h1>
+    return <div className="px-11 py-5 flex justify-between items-center bg-slate-600 shadow-md">
+        <h1 onClick={handleLogoPress} className="text-2xl text-skin-white-base font-bold cursor-pointer">Tasky</h1>
 
         {
             signedIn ? <UserProfile user={user} navigate={navigate} location={location}/> : 
@@ -25,6 +25,8 @@ export default function Header(){
             <Button 
                 text="Sign up"
                 onClick={()=>navigate(_pages.SIGN)}
+                className="bg-skin-white"
+                textClassName="text-skin-black-base"
             />
         }
     </div>
@@ -37,8 +39,8 @@ function UserProfile({user, navigate, location}){
 
     return <div
         onClick={()=>navigate(`${_pages.PROFILE}/${user.username}`)} 
-        className="h-12 w-12 flex justify-center items-center bg-skin-yellow cursor-pointer rounded-full shadow-lg"
+        className="h-10 w-10 flex justify-center items-center bg-skin-yellow cursor-pointer rounded-full shadow-lg"
     >
-        <p>{user.username.charAt(0)}</p>
+        <p className="text-xl font-semibold">{user.username.charAt(0).toUpperCase()}</p>
     </div>
 }

@@ -12,6 +12,7 @@ const _tasks = {
     GET_TASKS:"GET-TASK",
     ADD_TASK:"ADD-TASK",
     EDIT_TASK:"EDIT-TASK",
+    SEARCH:"SEARCH",
     DELETE_TASK:"DELETE_TASK"
 }
 

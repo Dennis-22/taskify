@@ -1,7 +1,6 @@
 import { useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { useUserContext } from "../context/user/UserContext"
-import Button from "../component/global/Button"
 import { _pages } from "../utils/constance"
 
 export default function LadingPage(){
@@ -12,16 +11,18 @@ export default function LadingPage(){
         if(signedIn === true) navigate(_pages.DASHBOARD)
     },[signedIn])
 
-    return  <div className="text-center py-11">
-        <h1 className="my-12 font-semibold text-4xl block leading-normal">
+    return  <div className="px-7 text-center py-11">
+        <h1 className="my-12 text-skin-black-base text-4xl font-semibold block leading-normal">
             <span className="block">Get all your task organize</span>
-            <span className="block">and well presented to you</span>
+            <span className="block">and accessible anytime anywhere</span>
         </h1>
-        <Button 
-            text="Start organizing your task now"
+        
+        <button
             onClick={()=>navigate(_pages.SIGN)}
-            className="mx-auto bg-skin-btn-blue"
-            textClassName="text-skin-white-base"
-        />
+            className="py-3 px-6 bg-skin-btn-blue text-skin-white-base text-lg font-semibold 
+            cursor-pointer rounded-3xl shadow-md outline-none border-none"
+        >
+            Start organizing your tasks now
+        </button>
     </div>
 }

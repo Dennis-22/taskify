@@ -1,6 +1,12 @@
 import {_tasks} from '../../utils/constance'
 
-// {id:'1', title:"Create a web app", description:"this is a task description", tag:"family", date:{start:"now", end:"later"}},
+// const tasks = [
+//     {id:'1', title:"React app", description:"this is a task description", tag:"family", date:{start:"now", end:"later"}},
+//     {id:'2', title:"Veu app", description:"this is a task description", tag:"work", date:{start:"now", end:"later"}},
+//     {id:'3', title:"Angular", description:"this is a task description", tag:"personal", date:{start:"now", end:"later"}},
+//     {id:'4', title:"Svelt", description:"this is a task description", tag:"work", date:{start:"now", end:"later"}},
+// ]
+
 const state = {
     data:[],
     tasks:[],
@@ -15,6 +21,10 @@ function taskReducer(state, action){
         case(_tasks.ADD_TASK):{
             let newTasks = [...state.data, payload]
             return {...state, data:newTasks, tasks:newTasks}
+        }
+        case(_tasks.SEARCH):{
+            let results = state.data.filter(task => task.title.toLowerCase().includes(payload.toLocaleLowerCase()))
+            return {...state, tasks:results}
         }
         case(_tasks.EDIT_TASK):{
             let newTasks = state.tasks.map((task) => {

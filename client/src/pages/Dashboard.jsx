@@ -1,16 +1,16 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { CgFolderAdd } from "react-icons/cg";
+import { TbFilesOff } from "react-icons/tb";
 import { useUserContext } from "../context/user/UserContext";
 import { useTaskContext } from "../context/task/TasksContext";
 import { Container } from "../component/global/Layout";
-import Filter from '../component/task/Filter'
 import Button from '../component/global/Button'
 import Task from "../component/task/Task";
 import Loader from "../component/global/Loader";
 import { _pages, _tasks, _user } from "../utils/constance";
 import { useEffect } from "react";
 import { getAllTasksRoute } from "../utils/api";
+import Header from "../component/Dashboard/Header";
 
 export default function Dashboard(){
     const {userState:{signedIn, user:{id, accessToken}}} = useUserContext()
@@ -41,30 +41,16 @@ export default function Dashboard(){
     },[])
 
     return <Container>
-        <>       
-            <p className="text-skin-black-base text-xl">Good Afternoon username</p>
-            <div className="my-6 py-2 px-3 flex justify-between bg-slate-600">
-                <Filter />
-                <Button 
-                    text="Create new"
-                    className="bg-skin-btn-blue"
-                    textClassName="text-skin-white-base"
-                    onClick={()=>navigate(_pages.CREATE_TASK)}
-                    icon={<CgFolderAdd className="text-skin-white-base"/>}
-                />
-            </div>
-
-            {
-                process.loading ? <Loader className="mt-[150px]"/> :
-                process. error ? <DisplayError getTasks={getTasks}/> :
-                tasks.length === 0 ? <DisplayEmptyTasks
-                    // different messages based on whether user don't have any task or they don't have task on what they are filtering  
-                    text={data.length === 0 ? "You do not have any task" : "You do not have any task here"}
-                /> :
-                <DisplayTasks />
-            }
-
-        </>
+        <Header />
+        {
+            process.loading ? <Loader className="mt-[150px]"/> :
+            process. error ? <DisplayError getTasks={getTasks} error={process.error}/> :
+            tasks.length === 0 ? <DisplayEmptyTasks
+                // different messages based on whether user don't have any task or they don't have task on what they are filtering  
+                text={data.length === 0 ? "You do not have any task" : "You do not have any task here"}
+            /> :
+            <DisplayTasks tasks={tasks}/>
+        }
     </Container>
 }
 
@@ -74,9 +60,9 @@ function DisplayTasks({tasks}){
     </div>
 }
 
-function DisplayError({getTasks}){
+function DisplayError({error, getTasks}){
     return <div className="mt-[150px] text-center">
-        <p className="text-xl">{process.error}</p>
+        <p className="text-xl text-skin-black-muted">{error}</p>
         <Button 
             text="Retry"
             onClick={getTasks}
@@ -87,8 +73,8 @@ function DisplayError({getTasks}){
 }
 
 function DisplayEmptyTasks({text}){
-    return <div>
-        <TbFilesOff />
-        <p>{text}</p>
+    return <div className="mt-[120px] text-center">
+        <TbFilesOff className="inline text-7xl text-skin-black-muted"/>
+        <p className="text-skin-black-muted mt-7">{text}</p>
     </div>
 }

@@ -57,15 +57,15 @@ export default function Profile() {
             <div className="w-[90%] md:w-5/12 max-w-sm mx-auto my-10">
                 <section className="text-center">
                     <div className="h-20 w-20 flex justify-center items-center mx-auto mb-5 bg-white rounded-full shadow-lg">
-                        <p>{username.charAt(0)}</p>
+                        <p>{username.charAt(0).toUpperCase()}</p>
                     </div>
                     
-                    <p className="text-xl">{username}</p>
-                    <p className="text-lg ">{email}</p>
+                    <p className="text-xl text-skin-black-base font-medium">{username}</p>
+                    <p className="text-lg text-skin-black-base font-medium">{email}</p>
                 </section>
 
                 <section className="my-14">
-                    <p className="text-center mb-5">Edit your account</p>
+                    <p className="mb-5 text-lg text-skin-black-base">Edit your account</p>
                     <Input 
                         placeholder="username"
                         label="Enter your new username"
@@ -93,7 +93,7 @@ export default function Profile() {
                 </section>
 
                 <section>
-                    <p className="text-center mb-5">Security</p>
+                    <p className="mb-5 text-skin-black-base text-lg text-center">Security</p>
                     <div className="flex gap-4 justify-center">
                         <Button 
                             text="Logout"

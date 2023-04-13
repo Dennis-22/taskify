@@ -5,6 +5,7 @@ export default function Tag({tag}) {
       `
     }>
     <span className={`
+      font-medium
       ${tag === "family" ? "text-skin-green" : tag === "personal" ? "text-skin-blue" : tag === "work" ? "text-skin-red" : "text-skin-yellow"}
       `
     }>

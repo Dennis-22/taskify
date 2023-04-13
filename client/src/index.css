@@ -28,7 +28,7 @@
         -moz-osx-font-smoothing: grayscale;
         -webkit-text-size-adjust: 100%;
 
-        --color-background: #F2F7FF;
+        --color-background: #FBFBFB;
         --color-btn-blue: #0B7FEA;
         
         --color-text-white-base: #FFFFFF;
@@ -54,4 +54,5 @@
 
 body{
     background-color: var(--color-background);
+    font-family: 'Inter', sans-serif;
 }

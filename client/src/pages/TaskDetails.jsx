@@ -1,5 +1,8 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { BsTextareaT, BsCalendarDate } from "react-icons/bs";
+import { AiOutlineTags } from "react-icons/ai";
+import { MdOutlineDescription } from "react-icons/md";
 import { useUserContext } from "../context/user/UserContext";
 import { useTaskContext } from "../context/task/TasksContext";
 import Button from "../component/global/Button";
@@ -68,52 +71,63 @@ export default function TaskDetails() {
                 process.getting ? <Loader className="mt-40"/>    
                 :
                 <>
+                    <DetailsWrap title="Title"text={title} icon={<BsTextareaT className="text-[18px]"/>}/>
 
-                    <section className="my-4 bg-skin-white py-4 px-5 rounded-lg">
-                        <p className="mb-2 text-xl font-medium">Title</p>
-                        <p className="text-skin-black-muted">{title}</p>
-                    </section>
+                    <DetailsWrap 
+                        title="Description"
+                        text={description} 
+                        icon={<MdOutlineDescription className="text-[18px]"/>}
+                    />
 
-                    <section className="my-4 bg-skin-white py-4 px-5 rounded-lg">
-                        <p className="mb-2 text-xl font-medium">Description</p>
-                        <p className="text-skin-black-muted">{description}</p>
-                    </section>
+                    <DetailsWrap 
+                        renderComponent={
+                            <>
+                                <p className="mb-2 flex items-center gap-2 text-skin-black-base">
+                                    <AiOutlineTags className="text-skin-black-base text-[18px]"/>
+                                    <span className="text-xl font-medium">Tag</span>
+                                </p>
+                                <Tag tag={tag}/>
+                            </>
+                        }
+                    />
 
-                    <section className="my-4 bg-skin-white py-4 px-5 rounded-lg">
-                        <p className="mb-2 text-xl font-medium">Tag</p>
-                        <Tag tag={tag}/>
-                    </section>
+                    <DetailsWrap 
+                        renderComponent={
+                            <>
+                                <p className="mb-2 flex items-center gap-2 text-skin-black-base">
+                                    <BsCalendarDate className="text-[18px]"/>
+                                    <span className="text-xl font-medium">Dates</span>
+                                </p>
+                                <div className="px-4">
+                                    <p className="text-skin-black-muted">
+                                        <span>Starts at - </span>
+                                        <span>{date.start}</span>
+                                    </p>
 
-                    <section className="my-4 bg-skin-white py-4 px-5 rounded-lg">
-                        <p className="mb-2 text-xl font-medium">Dates</p>
-                        <div className="px-4">
-                            <p className="text-skin-black-muted">
-                                <span>Starts at - </span>
-                                <span>{date.start}</span>
-                            </p>
+                                    <p className="text-skin-black-muted">
+                                        <span>Ends at - </span>
+                                        <span>{date.end}</span>
+                                    </p>
+                                </div>
+                            </>
+                        }
+                    />
 
-                            <p className="text-skin-black-muted">
-                                <span>Ends at - </span>
-                                <span>{date.end}</span>
-                            </p>
-                        </div>
-                    </section>
-                    
                     {
                         process.deleting ? <Loader className="mt-10"/>
                         :
-                        <div className="flex gap-4 justify-center mt-8">
+                        <div className="mt-8 flex gap-4 sm:gap-0 flex-col sm:flex-row ">
                             <Button 
                                 text="Edit task"
                                 onClick={()=>navigate(`${_pages.EDIT_TASK}/${taskId}`)}
-                                className="bg-skin-btn-blue"
+                                className="bg-skin-btn-blue w-fit mx-auto"
                                 textClassName="text-skin-white-base"
                             /> 
 
                             <Button 
                                 text="Delete task"
                                 onClick={()=>setShowDeleteTask(true)}
-                                className="bg-skin-btn-red"
+                                className="bg-skin-btn-red w-fit mx-auto"
                                 textClassName="text-skin-white-base"
                             /> 
                         </div>
@@ -132,6 +146,22 @@ export default function TaskDetails() {
     </>
 }
 
+function DetailsWrap({renderComponent=null, title, text, icon}){
+
+    return <div className="my-4 bg-skin-white py-4 px-5 rounded-lg border border-gray-300">
+        {
+            renderComponent ? renderComponent :
+            <>
+                <p className="mb-2 flex items-center gap-2 text-skin-black-base">
+                    {icon}
+                    <span className="text-xl text-skin-black-base font-medium">{title}</span>
+                </p>
+                <p className="text-skin-black-muted">{text}</p>
+            </>
+        }
+        
+    </div>
+}
 
 function DeleteTask({isOpen, onClose, deleteTask}){
     return <Modal isOpen={isOpen}>
